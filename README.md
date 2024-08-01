@@ -10,116 +10,102 @@ With GraphQL, clients can request exactly the data they need, nothing more and n
 Example For Lesson 1:
 
 ```graphql
-query GamesQuery {
-  games {
+query GamesQuery{
+  game(id: 3){
     title
     platform
-  },
-  authors {
+  }
+  author(id: 1){
     name
     verified
-  },
-  reviews {
-    id
+  }
+  review(id: 2) {
     content
     rating
   }
+}
+
+```
+
+Response:
+
+```json
+{
+  "data": {
+    "game": {
+      "title": "Elden Ring",
+      "platform": [
+        "PS5",
+        "Xbox",
+        "PC"
+      ]
+    },
+    "author": {
+      "name": "mario",
+      "verified": true
+    },
+    "review": {
+      "content": "lorem ipsum",
+      "rating": 10
+    }
+  }
+}
+```
+
+You can also use parameterized variables in queries as follows
+
+Query:
+
+```graphql
+
+query GamesQuery($gameID:ID!, $authorID:ID!, $reviewID:ID!){
+  game(id: $gameID){
+    title
+    platform
+  }
+  author(id: $authorID){
+    name
+    verified
+  }
+  review(id: $reviewID) {
+    content
+    rating
+  }
+}
+
+```
+
+Variables:
+
+```json
+{
+  "authorID": "3",
+  "reviewID": "1",
+  "gameID": "2"
 }
 ```
 
 Response:
 
-```
+```json
 {
   "data": {
-    "games": [
-      {
-        "title": "Zelda, Tears of the Kingdom",
-        "platform": [
-          "Switch"
-        ]
-      },
-      {
-        "title": "Final Fantasy 7 Remake",
-        "platform": [
-          "PS5",
-          "Xbox"
-        ]
-      },
-      {
-        "title": "Elden Ring",
-        "platform": [
-          "PS5",
-          "Xbox",
-          "PC"
-        ]
-      },
-      {
-        "title": "Mario Kart",
-        "platform": [
-          "Switch"
-        ]
-      },
-      {
-        "title": "Pokemon Scarlet",
-        "platform": [
-          "PS5",
-          "Xbox",
-          "PC"
-        ]
-      }
-    ],
-    "authors": [
-      {
-        "name": "mario",
-        "verified": true
-      },
-      {
-        "name": "yoshi",
-        "verified": false
-      },
-      {
-        "name": "peach",
-        "verified": true
-      }
-    ],
-    "reviews": [
-      {
-        "id": "1",
-        "content": "lorem ipsum",
-        "rating": 9
-      },
-      {
-        "id": "2",
-        "content": "lorem ipsum",
-        "rating": 10
-      },
-      {
-        "id": "3",
-        "content": "lorem ipsum",
-        "rating": 7
-      },
-      {
-        "id": "4",
-        "content": "lorem ipsum",
-        "rating": 5
-      },
-      {
-        "id": "5",
-        "content": "lorem ipsum",
-        "rating": 8
-      },
-      {
-        "id": "6",
-        "content": "lorem ipsum",
-        "rating": 7
-      },
-      {
-        "id": "7",
-        "content": "lorem ipsum",
-        "rating": 10
-      }
-    ]
+    "game": {
+      "title": "Final Fantasy 7 Remake",
+      "platform": [
+        "PS5",
+        "Xbox"
+      ]
+    },
+    "author": {
+      "name": "peach",
+      "verified": true
+    },
+    "review": {
+      "content": "lorem ipsum",
+      "rating": 9
+    }
   }
 }
+
 ```

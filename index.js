@@ -5,6 +5,18 @@ import { typeDefs } from './schema.js';
 
 import db from './_db.js';
 
+// Now each resolver function has 4 parameters
+// 1st is the parent -> The return value of the resolver for this field's parent (i.e., the previous resolver in the resolver chain 
+// which we won't use right now as it is used in relationship
+
+// 2nd is the args -> the arguments passed when we query this  ## This is what we want
+
+// 3rd is the contextValue -> An object shared across all resolvers that are executing for a particular operation. Use this to share per-operation state, including authentication information, dataloader instances, and anything else to track across resolvers
+// which we don't currently need
+
+// 4th is the info -> Contains information about the operation's execution state, including the field name, the path to the field from the root, and more.
+// which we don't currently need
+
 const resolvers = {
 	Query : {
 		games() {
@@ -15,6 +27,16 @@ const resolvers = {
 		},
 		authors(){
 			return db.authors;
+		},
+
+		review(parent, args, contextValue, info){
+			return db.reviews.find((review)=> review.id===args.id);
+		},
+		author(_, args){
+			return db.authors.find((author)=> author.id === args.id);
+		},
+		game(_, args){
+			return db.games.find((game)=> game.id === args.id);
 		}
 	}
 }
@@ -29,10 +51,16 @@ const server = new ApolloServer({
 	// It tells HOW we want to HANDLE requests/queries
 	/*
 	Before writing the resolver functions, we need to look at our Query type
+
 	type Query {
 	        reviews: [Review]
-	        game: [Game]
+	        games: [Game]
 	        authors: [Author]
+
+	        review(id: ID!): Review
+	        author(id: ID!): Author
+	        game(id: ID!): Game
+
 	}
 	Now in the resolver : we need to define all the resolver functions for the types we have defined in out root query
 	*/
