@@ -78,6 +78,25 @@ const resolvers = {
 			}
 			db.games.push(game);
 			return game;
+		},
+		updateGame(_, args){
+			db.games = db.games.map((g) => {
+				if(g.id === args.id){
+					return {...g, ...args.edits}
+				}
+				return g
+			})
+
+			let game = db.games.find( g => g.id === args.id );
+			if(game) return game;
+			else {
+				return {
+					id: "-1",
+					title: "Not Found",
+					platform: [],
+					reviews : []
+				}
+			}
 		}
 	}
 }

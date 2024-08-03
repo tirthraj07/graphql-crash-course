@@ -77,7 +77,7 @@ As you can see, game with id = 5, titled: "Pokemon Scarlet" is deleted
 
 Let us look at how we can addGame
 
-Query:
+addGame Example Query:
 
 ```graphql
 mutation AddMutation($game: AddGameInput!) {
@@ -110,6 +110,70 @@ Response:
       "platform": [
         "Switch",
         "PS5"
+      ]
+    }
+  }
+}
+```
+
+Nows lets look at update game
+
+updateGame Example Query
+
+```graphql
+mutation updateMutation($updateGameId: ID!, $edits: updateGameInput!) {
+  updateGame(id: $updateGameId, edits: $edits) {
+    id
+    title
+    platform
+    
+    reviews {
+      author {
+        name
+      }
+      content
+    }
+  }
+}
+```
+
+Variables
+
+```json
+{  
+  "updateGameId": "1",
+  "edits": {
+    "title":"God Of War",
+    "platform": [
+      "PS5"
+    ]
+  }
+}
+```
+
+Response 
+```json
+{
+  "data": {
+    "updateGame": {
+      "id": "1",
+      "title": "God Of War",
+      "platform": [
+        "PS5"
+      ],
+      "reviews": [
+        {
+          "author": {
+            "name": "yoshi"
+          },
+          "content": "lorem ipsum"
+        },
+        {
+          "author": {
+            "name": "peach"
+          },
+          "content": "lorem ipsum"
+        }
       ]
     }
   }

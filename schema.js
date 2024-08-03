@@ -41,9 +41,15 @@ input AddGameInput {
 	platform: [String!]!
 }
 
+input updateGameInput {
+	title: String,
+	platform: [String!]
+}
+
 type Mutation {
 	deleteGame(id: ID!) : [Game]!
 	addGame(game: AddGameInput!) : Game
+	updateGame(id: ID!, edits: updateGameInput!): Game
 }
 
 
