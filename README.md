@@ -8,146 +8,15 @@ With GraphQL, clients can request exactly the data they need, nothing more and n
 
 Relating data
 
-Example For Lesson 3:
+Example For Lesson 4:
 
+deleteGame Query Example
 ```graphql
-query GamesQuery{
-  games {
+mutation deleteGames($deleteGameId: ID!){
+  deleteGame(id: $deleteGameId) {
+    id
     title
     platform
-    reviews {
-      author {
-        name
-      }
-      content
-      rating
-    }
-  }
-}
-
-```
-
-Response:
-
-```json
-{
-  "data": {
-    "games": [
-      {
-        "title": "Zelda, Tears of the Kingdom",
-        "platform": [
-          "Switch"
-        ],
-        "reviews": [
-          {
-            "author": {
-              "name": "yoshi"
-            },
-            "content": "lorem ipsum",
-            "rating": 10
-          },
-          {
-            "author": {
-              "name": "peach"
-            },
-            "content": "lorem ipsum",
-            "rating": 10
-          }
-        ]
-      },
-      {
-        "title": "Final Fantasy 7 Remake",
-        "platform": [
-          "PS5",
-          "Xbox"
-        ],
-        "reviews": [
-          {
-            "author": {
-              "name": "mario"
-            },
-            "content": "lorem ipsum",
-            "rating": 9
-          },
-          {
-            "author": {
-              "name": "mario"
-            },
-            "content": "lorem ipsum",
-            "rating": 7
-          }
-        ]
-      },
-      {
-        "title": "Elden Ring",
-        "platform": [
-          "PS5",
-          "Xbox",
-          "PC"
-        ],
-        "reviews": [
-          {
-            "author": {
-              "name": "peach"
-            },
-            "content": "lorem ipsum",
-            "rating": 7
-          }
-        ]
-      },
-      {
-        "title": "Mario Kart",
-        "platform": [
-          "Switch"
-        ],
-        "reviews": [
-          {
-            "author": {
-              "name": "yoshi"
-            },
-            "content": "lorem ipsum",
-            "rating": 5
-          }
-        ]
-      },
-      {
-        "title": "Pokemon Scarlet",
-        "platform": [
-          "PS5",
-          "Xbox",
-          "PC"
-        ],
-        "reviews": [
-          {
-            "author": {
-              "name": "yoshi"
-            },
-            "content": "lorem ipsum",
-            "rating": 8
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-Another Example of relating data
-
-Query:
-
-```graphql
-query GamesQuery($authorId: ID!){
-  author(id: $authorId) {
-    name
-    verified
-    reviews {
-      game {
-        title
-      }
-      rating
-      content
-    }
   }
 }
 ```
@@ -156,7 +25,77 @@ Variables:
 
 ```json
 {
-  "authorId": "3"
+  "deleteGameId": "5"
+}
+```
+
+
+Response:
+
+```json
+{
+  "data": {
+    "deleteGame": [
+      {
+        "id": "1",
+        "title": "Zelda, Tears of the Kingdom",
+        "platform": [
+          "Switch"
+        ]
+      },
+      {
+        "id": "2",
+        "title": "Final Fantasy 7 Remake",
+        "platform": [
+          "PS5",
+          "Xbox"
+        ]
+      },
+      {
+        "id": "3",
+        "title": "Elden Ring",
+        "platform": [
+          "PS5",
+          "Xbox",
+          "PC"
+        ]
+      },
+      {
+        "id": "4",
+        "title": "Mario Kart",
+        "platform": [
+          "Switch"
+        ]
+      }
+    ]
+  }
+}
+```
+
+As you can see, game with id = 5, titled: "Pokemon Scarlet" is deleted
+
+
+Let us look at how we can addGame
+
+Query:
+
+```graphql
+mutation AddMutation($game: AddGameInput!) {
+  addGame(game: $game) {
+    id
+    title
+    platform
+  }
+}
+```
+
+Variables 
+```json
+{
+  "game": {
+    "title": "A new Game",
+    "platform": ["Switch","PS5"]
+  }
 }
 ```
 
@@ -165,24 +104,12 @@ Response:
 ```json
 {
   "data": {
-    "author": {
-      "name": "peach",
-      "verified": true,
-      "reviews": [
-        {
-          "game": {
-            "title": "Elden Ring"
-          },
-          "rating": 7,
-          "content": "lorem ipsum"
-        },
-        {
-          "game": {
-            "title": "Zelda, Tears of the Kingdom"
-          },
-          "rating": 10,
-          "content": "lorem ipsum"
-        }
+    "addGame": {
+      "id": "5",
+      "title": "A new Game",
+      "platform": [
+        "Switch",
+        "PS5"
       ]
     }
   }

@@ -70,6 +70,14 @@ const resolvers = {
 		deleteGame(_, args){
 			db.games = db.games.filter((g) => g.id !== args.id);
 			return db.games;
+		},
+		addGame(_, args){
+			let game = {
+				...args.game,
+				id: (db.games.length + 1).toString()
+			}
+			db.games.push(game);
+			return game;
 		}
 	}
 }
