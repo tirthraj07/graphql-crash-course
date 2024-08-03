@@ -36,6 +36,11 @@ type Query {
 
 }
 
+type Mutation {
+	deleteGame(id: ID!) : [Game]!
+}
+
+
 
 `
 

@@ -64,6 +64,13 @@ const resolvers = {
 		reviews(parent){
 			return db.reviews.filter((r) => r.author_id === parent.id);
 		}
+	},
+
+	Mutation: {
+		deleteGame(_, args){
+			db.games = db.games.filter((g) => g.id !== args.id);
+			return db.games;
+		}
 	}
 }
 
