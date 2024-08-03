@@ -6,22 +6,22 @@ It provides a more efficient, powerful, and flexible alternative to REST.
 
 With GraphQL, clients can request exactly the data they need, nothing more and nothing less, which can significantly optimize the performance of your API.
 
+Relating data
 
-Example For Lesson 1:
+Example For Lesson 3:
 
 ```graphql
 query GamesQuery{
-  game(id: 3){
+  games {
     title
     platform
-  }
-  author(id: 1){
-    name
-    verified
-  }
-  review(id: 2) {
-    content
-    rating
+    reviews {
+      author {
+        name
+      }
+      content
+      rating
+    }
   }
 }
 
@@ -32,56 +32,131 @@ Response:
 ```json
 {
   "data": {
-    "game": {
-      "title": "Elden Ring",
-      "platform": [
-        "PS5",
-        "Xbox",
-        "PC"
-      ]
-    },
-    "author": {
-      "name": "mario",
-      "verified": true
-    },
-    "review": {
-      "content": "lorem ipsum",
-      "rating": 10
-    }
+    "games": [
+      {
+        "title": "Zelda, Tears of the Kingdom",
+        "platform": [
+          "Switch"
+        ],
+        "reviews": [
+          {
+            "author": {
+              "name": "yoshi"
+            },
+            "content": "lorem ipsum",
+            "rating": 10
+          },
+          {
+            "author": {
+              "name": "peach"
+            },
+            "content": "lorem ipsum",
+            "rating": 10
+          }
+        ]
+      },
+      {
+        "title": "Final Fantasy 7 Remake",
+        "platform": [
+          "PS5",
+          "Xbox"
+        ],
+        "reviews": [
+          {
+            "author": {
+              "name": "mario"
+            },
+            "content": "lorem ipsum",
+            "rating": 9
+          },
+          {
+            "author": {
+              "name": "mario"
+            },
+            "content": "lorem ipsum",
+            "rating": 7
+          }
+        ]
+      },
+      {
+        "title": "Elden Ring",
+        "platform": [
+          "PS5",
+          "Xbox",
+          "PC"
+        ],
+        "reviews": [
+          {
+            "author": {
+              "name": "peach"
+            },
+            "content": "lorem ipsum",
+            "rating": 7
+          }
+        ]
+      },
+      {
+        "title": "Mario Kart",
+        "platform": [
+          "Switch"
+        ],
+        "reviews": [
+          {
+            "author": {
+              "name": "yoshi"
+            },
+            "content": "lorem ipsum",
+            "rating": 5
+          }
+        ]
+      },
+      {
+        "title": "Pokemon Scarlet",
+        "platform": [
+          "PS5",
+          "Xbox",
+          "PC"
+        ],
+        "reviews": [
+          {
+            "author": {
+              "name": "yoshi"
+            },
+            "content": "lorem ipsum",
+            "rating": 8
+          }
+        ]
+      }
+    ]
   }
 }
 ```
 
-You can also use parameterized variables in queries as follows
+Another Example of relating data
 
 Query:
 
 ```graphql
-
-query GamesQuery($gameID:ID!, $authorID:ID!, $reviewID:ID!){
-  game(id: $gameID){
-    title
-    platform
-  }
-  author(id: $authorID){
+query GamesQuery($authorId: ID!){
+  author(id: $authorId) {
     name
     verified
-  }
-  review(id: $reviewID) {
-    content
-    rating
+    reviews {
+      game {
+        title
+      }
+      rating
+      content
+    }
   }
 }
-
 ```
 
 Variables:
 
 ```json
 {
-  "authorID": "3",
-  "reviewID": "1",
-  "gameID": "2"
+  "authorId": "3"
 }
 ```
 
@@ -90,22 +165,26 @@ Response:
 ```json
 {
   "data": {
-    "game": {
-      "title": "Final Fantasy 7 Remake",
-      "platform": [
-        "PS5",
-        "Xbox"
-      ]
-    },
     "author": {
       "name": "peach",
-      "verified": true
-    },
-    "review": {
-      "content": "lorem ipsum",
-      "rating": 9
+      "verified": true,
+      "reviews": [
+        {
+          "game": {
+            "title": "Elden Ring"
+          },
+          "rating": 7,
+          "content": "lorem ipsum"
+        },
+        {
+          "game": {
+            "title": "Zelda, Tears of the Kingdom"
+          },
+          "rating": 10,
+          "content": "lorem ipsum"
+        }
+      ]
     }
   }
 }
-
 ```

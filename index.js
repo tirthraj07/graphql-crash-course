@@ -38,6 +38,32 @@ const resolvers = {
 		game(_, args){
 			return db.games.find((game)=> game.id === args.id);
 		}
+	},
+
+	// Relating Data
+	// We need to make resolver functions to handle the nested queries
+	// When ever we search for the Review in the Game object, apollo will look for the Game Resolver to handle the request for the Review object
+	// But how will we relate the data?
+	// Using the parent argument, we can relate the data => as parent argument is the reference to the value returned by the previous resolver
+
+
+	Game : {
+		reviews(parent){
+			return db.reviews.filter((r) => r.game_id === parent.id);
+		}
+	},
+	Review : {
+		game(parent){
+			return db.games.find((g) => g.id === parent.game_id);
+		},
+		author(parent){
+			return db.authors.find((a) => a.id == parent.author_id);
+		}
+	},
+	Author : {
+		reviews(parent){
+			return db.reviews.filter((r) => r.author_id === parent.id);
+		}
 	}
 }
 
